@@ -1,0 +1,75 @@
+{% extends 'base/base_battle.html' %}
+{% load static %}
+{% load add_attr %}
+{% block content %}
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+   <!-- BEGIN CONTENT -->
+   <div class="page-content-wrapper">
+      <!-- BEGIN CONTENT BODY -->
+      <!-- BEGIN PAGE CONTENT BODY -->
+      <div class="page-content" style="min-height: 376px;">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <!-- BEGIN PORTLET-->
+                  <form method="post" action="" enctype="multipart/form-data">
+                     <div class="portlet light bordered">
+                        {% csrf_token %}
+                        <div class="portlet-title tabbable-line">
+                           <div class="caption">
+                              <i class="icon-globe font-dark hide"></i>
+                              <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+                           </div>
+                           <button type="submit" class="btn green pull-right"><i class="fa fa-plus">&nbsp;</i>Add Problem</button>
+                        </div>
+                        <div class="portlet-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <p>
+                                 <div class="col-md-2" style="line-height: 30px; margin: auto">Short Name <span style="color: red;">*</span>:</div>
+                                 <div class="col-md-1">
+                                    <input type="text" name="short_name" class="form-control" required>
+                                 </div>
+                                 </p>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <p>
+                                 <div class="col-md-2" style="line-height: 30px;">Full Name <span style="color: red;">*</span> :</div>
+                                 <div class="col-md-3">
+                                    <input type="text" name="full_name" class="form-control">
+                                 </div>
+                                 </p>
+                              </div>
+                           </div>
+                           {% comment %} 
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <p>
+                                 <div class="col-md-2" style="line-height: 30px;">Input Validator:</div>
+                                 <div class="col-md-3">
+                                    <input type="file" name="input_validator" class="form-control">
+                                 </div>
+                                 </p>
+                              </div>
+                           </div>
+                           {% endcomment %}
+                        </div>
+                     </div>
+               </div>
+               </form>
+               <!-- END PORTLET-->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- END PAGE CONTENT BODY -->
+   <!-- END CONTENT BODY -->
+</div>
+<!-- END CONTENT -->
+</div>
+{% endblock %}

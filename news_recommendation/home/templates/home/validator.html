@@ -1,0 +1,63 @@
+{% extends 'base/base_problem_modify.html' %}
+{% load static %}
+{% load add_attr %}
+
+{% block header_script %}
+   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+{% endblock %}
+
+{% block polygon_content %}
+
+   <form method="post" action="" enctype="multipart/form-data">
+      <div class="portlet light bordered">
+         {% csrf_token %}
+         <div class="portlet-title tabbable-line">
+            <div class="caption">
+               <i class="icon-globe font-dark hide"></i>
+               <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+            </div>
+            <button type="submit" class="btn green pull-right" id="submit"><i class="fa fa-plus">&nbsp;</i>Update Problem</button>
+         </div>
+         <div class="portlet-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <p>
+                  <div class="col-md-2" style="line-height: 30px;">Validator <span style="color: red;">*</span>:</div>
+                  <div id="validator_source" name="validator_source" style="width:800px;height:600px;border:1px solid grey" class="col-md-3"></div>
+                  <textarea id="validator_source_tmp" name="validator_source_tmp" hidden>{{problem.validator}}</textarea>
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="portlet-body">
+      </div>
+   </form>
+   
+{% endblock %}
+{% block footer_script %}
+   <script>
+      require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+      
+      let proxy = URL.createObjectURL(new Blob([`
+         self.MonacoEnvironment = {
+            baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+         };
+         importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
+      `], { type: 'text/javascript' }));
+      
+      require(["vs/editor/editor.main"], function () {
+         var validator_source = $('#validator_source_tmp').text();
+         var editor = monaco.editor.create(document.getElementById('validator_source'), {
+            value: validator_source,
+            language: 'cpp',
+            theme: 'vs-dark'
+         });
+         editor.onDidChangeModelContent(function(e){
+            $('#validator_source_tmp').text(editor.getValue());
+         })
+      });
+      
+   </script>
+{% endblock %}

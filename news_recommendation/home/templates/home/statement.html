@@ -1,0 +1,91 @@
+{% extends 'base/base_problem_modify.html' %}
+{% load static %}
+{% load add_attr %}
+
+{% block header_script %}
+
+{% endblock %}
+
+{% block polygon_content %}
+
+    <!-- BEGIN PORTLET-->
+    <form method="post" action="" enctype="multipart/form-data">
+    <div class="portlet light bordered">
+        {% csrf_token %}
+        <div class="portlet-title tabbable-line">
+            <div class="caption">
+                <i class="icon-globe font-dark hide"></i>
+                <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+            </div>
+            <button type="submit" class="btn green pull-right"><i class="fa fa-plus">&nbsp;</i>Update Problem</button>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-md-12">
+                <p>
+                <div class="col-md-2" style="line-height: 30px;">Short Name <span style="color: red;">*</span> :</div>
+                <div class="col-md-5">
+                    <textarea id="short_name" name="short_name">{{ problem.short_name }}</textarea>
+                </div>
+                </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <p>
+                <div class="col-md-2" style="line-height: 30px;">Full Name <span style="color: red;">*</span> :</div>
+                <div class="col-md-8">
+                    <textarea id="full_name" name="full_name">{{ problem.full_name }}</textarea>
+                </div>
+                </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <p>
+                <div class="col-md-2" style="line-height: 30px;">Time limit<span style="color: red;">*</span> :</div>
+                <div class="col-md-8">
+                    <textarea id="time_limit" name="time_limit">{{ problem.time_limit }}</textarea>
+                </div>
+                </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <p>
+                <div class="col-md-2" style="line-height: 30px;">Memory limit <span style="color: red;">*</span> :</div>
+                <div class="col-md-5">
+                    <textarea id="memory_limit" name="memory_limit"> {{ problem.memory_limit }}</textarea>
+                </div>
+                </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <p>
+                <div class="col-md-2" style="line-height: 30px;">Statement <span style="color: red;">*</span> :</div>
+                <div class="col-md-10">
+                    {% comment %} {{ form.statement|add_attr:"name:statement,class:summernote" }} {% endcomment %}
+                    <textarea name="statement" class="summernote">{{ problem.statement }}</textarea>
+                </div>
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <!-- END PORTLET-->
+
+
+{% endblock %}
+
+
+{% block footer_script %}
+
+    <script>
+    $(document).ready(function() {
+        $('.summernote').summernote({height:400});
+    });
+    </script>
+
+{% endblock %}

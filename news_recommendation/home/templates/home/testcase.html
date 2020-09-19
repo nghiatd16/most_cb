@@ -1,0 +1,54 @@
+{% extends 'base/base_problem_modify.html' %}
+{% load static %}
+{% load add_attr %}
+{% block polygon_content %}
+   <form method="post" action="" enctype="multipart/form-data">
+      <div class="portlet light bordered">
+         {% csrf_token %}
+         <div class="portlet-title tabbable-line">
+            <div class="caption">
+               <i class="icon-globe font-dark hide"></i>
+               <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+            </div>
+            <button class="btn green pull-right" id="submit"><i class="fa fa-plus">&nbsp;</i>Update Problem</button>
+         </div>
+         <div class="portlet-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <p>
+                  <div class="col-md-2" style="line-height: 30px;">Testcase <span style="color: red;">*</span>:</div>
+                  <input type="file" name="testcase" class="form-control" required>
+                  </p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-1" style="line-height: 30px;">Show test:</div>
+               <div class="col-md-10">
+                  <table class="table table-bordered table-dark">
+                     <thead>
+                        <tr>
+                           <th scope="row">ID</th>
+                           <th scope="row">Input</th>
+                           <th scope="row">Output</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for test in problem.judgement_report.run_test %}
+                        <tr scope="row">
+                           <td>{{forloop.counter}}</td>
+                           <td>
+                              <pre><code>{{test.solution.stdin}}</code></pre>
+                           </td>
+                           <td>
+                              <pre><code>{{test.solution.stdout}}</code></pre>
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+{% endblock %}

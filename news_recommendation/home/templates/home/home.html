@@ -1,0 +1,100 @@
+{% extends 'base/base_battle.html' %}
+{% load static %}
+{% block content %}
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+   <!-- BEGIN CONTENT -->
+   <div class="page-content-wrapper">
+      <!-- BEGIN CONTENT BODY -->
+      <!-- BEGIN PAGE CONTENT BODY -->
+      <div class="page-content" style="min-height: 376px;">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <!-- BEGIN PORTLET-->
+                  <div class="portlet light bordered">
+                     <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                           <i class="icon-globe font-dark hide"></i>
+                           <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+                        </div>
+                        <button type="button" onclick="window.location='/create_problem';" class="btn green pull-right"><i class="fa fa-plus">&nbsp;</i>Add Problem</button>
+                     </div>
+                     <div class="portlet-body">
+                        <div class="row">
+                           <div class="col-md-8 col-md-offset-2">
+                              <table class="table table-hover table-light table-striped" style="margin: 0 auto;">
+                                 <thead>
+                                    <tr class="uppercase">
+                                       <th class="text-center">#</th>
+                                       <th class="text-center">Short Name</th>
+                                       <th class="text-center">Full Name</th>
+                                       <th class="text-center">Status</th>
+                                    </tr>
+                                 </thead>
+                                 {% for problem in list_problem %}
+                                 <tr>
+                                    <td class="text-center">{{forloop.counter}}</td>
+                                    {% if problem.problem_validated <= 1 %}
+                                    <td class="text-center">{{problem.short_name}}</a></td>
+                                    {% else %}
+                                    <td class="text-center"><a>{{problem.short_name}}</a></td>
+                                    {% endif %}
+                                    <td class="text-center">{{problem.name}}</td>
+                                    {% if problem.problem_validated == 1 %}
+                                    <td class="alert alert-success text-center">Accepted</td>
+                                    {% else %}
+                                    {% if problem.problem_validated == 0 %}
+                                    <td class="alert alert-danger text-center">Submit Failed</td>
+                                    {% elif problem.problem_validated == 2 %}
+                                    <td class="alert alert-warning text-center">Waiting</td>
+                                    {% elif problem.problem_validated == 3 %}
+                                    <td class="alert alert-danger text-center">Not Accepted</td>
+                                    {% elif problem.problem_validated == 4 %}
+                                    <td class="alert alert-warning text-center">Validating</td>
+                                    {% elif problem.problem_validated == 5 %}
+                                    <td class="alert alert-danger text-center">Not commited</td>
+                                    {% endif %}
+                                    {% endif %}
+                                    <td class="text-center" style="font-size: 18px">
+                                       <a data-toggle="modal">
+                                       <i onclick="window.location='/problems/{{problem.id}}/statement';" class="fa fa-pencil font-green-jungle" data-toggle="tooltip" title="Chỉnh sửa" style="margin: 0 2px;"></i>
+                                       </a>
+                                       <a href="#problem_{{problem.id}}_delete" data-toggle="modal">
+                                       <i class="fa fa-close font-red" data-toggle="tooltip" title="Xóa problem" style="margin: 0 2px;"></i>
+                                       </a>
+                                    </td>
+                                    <div id="problem_{{problem.id}}_delete" class="modal fade" tabindex="-1">
+                                       <form method="post" action="/problems/{{problem.id}}/delete">
+                                          {% csrf_token %}
+                                          <div class="modal-header">
+                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                             <h4 class="modal-title caption-subject">
+                                                <strong>Xóa</strong> problem <strong>{{problem.name}}</strong>?
+                                             </h4>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" data-dismiss="modal" class="btn btn-outline dark">Hủy Bỏ</button>
+                                             <button type="submit" class="btn green">OK</button>
+                                          </div>
+                                       </form>
+                                    </div>
+                                 </tr>
+                                 {% endfor %}
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END PORTLET-->
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- END PAGE CONTENT BODY -->
+      <!-- END CONTENT BODY -->
+   </div>
+   <!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->
+{% endblock %}

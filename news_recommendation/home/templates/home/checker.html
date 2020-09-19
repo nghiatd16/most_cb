@@ -1,0 +1,82 @@
+{% extends 'base/base_problem_modify.html' %}
+{% load static %}
+{% load add_attr %}
+
+{% block header_script %}
+   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+{% endblock %}
+
+
+{% block polygon_content %}
+   <form method="post" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="portlet light bordered">
+         <div class="portlet-title tabbable-line">
+            <div class="caption">
+               <i class="icon-globe font-dark hide"></i>
+               <span class="caption-subject font-blue-madison bold">Proptit Polygon</span>
+            </div>
+            <button type="submit" class="btn green pull-right" id="submit"><i class="fa fa-plus">&nbsp;</i>Update Problem</button>
+         </div>
+         <div class="portlet-body">
+            <div class="row">
+               <p>
+               <div class="col-md-2" style="line-height: 30px;">Default Checker<span style="color: red;">*</span>:</div>
+               <select id="default-checker" name="default-checker">
+                  <option value="None">None</option>
+                  <option value="lcmp.cpp">lcmp.cpp - lines, ignore white spaces</option>
+                  <option value="ncmp.cpp">ncmp.cpp - single or more int64, ignores whitespaces</option>
+                  <option value="rcmp6.cpp">rcmp6.cpp - single or more double, max array error -E16</option>
+               </select>
+               </p>
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                  <p>
+                  <div class="col-md-2" style="line-height: 30px;">Custom checker <span style="color: red;">*</span>:</div>
+                  <div id="checker_source" style="width:800px;height:600px;border:1px solid grey" class="col-md-3"></div>
+                  <textarea id="checker_source_tmp" name="checker_source_tmp" hidden>{{problem.checker}}</textarea>
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+{% endblock %}
+
+{% block footer_script %}
+<script>
+   require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' }});
+   window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+   
+   let proxy = URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+         baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+      };
+      importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
+   `], { type: 'text/javascript' }));
+   
+   require(["vs/editor/editor.main"], function () {
+      var checker_source = $('#checker_source_tmp').text();
+      $('#checker_source').text('');
+      var editor = monaco.editor.create(document.getElementById('checker_source'), {
+         value: checker_source,
+         language: 'cpp',
+         theme: 'vs-dark'
+      });
+      console.log(editor.getValue());
+      $('#programing-language').change(function(){
+               console.log($('#programing-language option:selected').text());
+               //editor.updateOptions({
+               //    language: $('#programing-language option:selected').text()
+               //});
+               monaco.editor.setModelLanguage(editor.getModel(), $('#programing-language option:selected').text());
+         }
+      )
+      editor.onDidChangeModelContent(function(e){
+         $('#checker_source_tmp').text(editor.getValue());
+      })
+   });
+   
+</script>
+{% endblock %}
